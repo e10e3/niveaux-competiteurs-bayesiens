@@ -16,11 +16,13 @@ namespace myApp
 			// *********************************
 			//     Création des données
 			// *********************************
-			
+
 			// Données des poules A et B de la coupe du monde de football 2010
 			var winnerData = new[] { 0, 2, 2, 1, 2, 0, 5, 4, 4, 6, 7, 6 };
 			var loserData = new[] { 1, 3, 0, 3, 1, 3, 6, 7, 5, 4, 5, 7 };
 			var drawData = new[] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 };
+
+			var countries = new[] { "Afrique du Sud", "Mexique", "Uruguay", "France", "Argentine", "Corée du Sud", "Grèce", "Nigeria" };
 
 			// Define the statistical model as a probabilistic program
 			var game = new Range(winnerData.Length);
@@ -87,7 +89,7 @@ namespace myApp
 
 			foreach (var playerSkill in orderedPlayerSkills)
 			{
-				Console.WriteLine($"Player {playerSkill.Player} skill: {playerSkill.Skill}");
+				Console.WriteLine($"{countries[playerSkill.Player].PadLeft(15, ' ')} : {playerSkill.Skill}");
 			}
 		}
 	}
