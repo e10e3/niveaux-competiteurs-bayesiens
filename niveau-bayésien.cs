@@ -6,25 +6,32 @@ namespace myApp
 	using Microsoft.ML.Probabilistic;
 	using Microsoft.ML.Probabilistic.Distributions;
 	using Microsoft.ML.Probabilistic.Models;
+	using Range = Microsoft.ML.Probabilistic.Models.Range;
 
 	class Program
 	{
 
 		static void Main(string[] args)
 		{
+			// *********************************
+			//     Création des données
+			// *********************************
 			// The winner and loser in each of 6 samples games
 			var winnerData = new[] { 0, 0, 0, 1, 3, 4 };
 			var loserData = new[] { 1, 3, 4, 2, 1, 2 };
 
 			// Define the statistical model as a probabilistic program
-			var game = new Microsoft.ML.Probabilistic.Models.Range(winnerData.Length);
-			var player = new Microsoft.ML.Probabilistic.Models.Range(winnerData.Concat(loserData).Max() + 1);
+			var game = new Range(winnerData.Length);
+			var player = new Range(winnerData.Concat(loserData).Max() + 1);
 			var playerSkills = Variable.Array<double>(player);
 			playerSkills[player] = Variable.GaussianFromMeanAndVariance(6, 9).ForEach(player);
 
 			var winners = Variable.Array<int>(game);
 			var losers = Variable.Array<int>(game);
 
+			// *******************************************
+			//    Déclaration de la méthode d'inférence
+			// *******************************************
 			using (Variable.ForEach(game))
 			{
 				// The player performance is a noisy version of their skill
@@ -39,10 +46,18 @@ namespace myApp
 			winners.ObservedValue = winnerData;
 			losers.ObservedValue = loserData;
 
+			// **********************************
+			//    Effectuation de l'inférence
+			// **********************************
+
 			// Run inference
 			var inferenceEngine = new InferenceEngine();
 			var inferredSkills = inferenceEngine.Infer<Gaussian[]>(playerSkills);
 
+
+			// **********************************
+			//      Affichage
+			// **********************************
 			// The inferred skills are uncertain, which is captured in their variance
 			var orderedPlayerSkills = inferredSkills
 			.Select((s, i) => new { Player = i, Skill = s })
