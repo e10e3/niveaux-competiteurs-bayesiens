@@ -16,7 +16,8 @@ namespace myApp
 			// *********************************
 			//     Création des données
 			// *********************************
-			// The winner and loser in each of 6 samples games
+			
+			// Données des poules A et B de la coupe du monde de football 2010
 			var winnerData = new[] { 0, 2, 2, 1, 2, 0, 5, 4, 4, 6, 7, 6 };
 			var loserData = new[] { 1, 3, 0, 3, 1, 3, 6, 7, 5, 4, 5, 7 };
 			var drawData = new[] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 };
